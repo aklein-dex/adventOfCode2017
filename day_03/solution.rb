@@ -13,23 +13,69 @@ def part2(input)
   
   x = 0
   y = 0
-  layer = 0
+  length = 1
   
-  while result < input
+  while true
+    length+=2
+    x+=1
     
-    data[x] = Hash.new if !data.has_key?(x)
+    # Calculte the right side of the square
+    top = y + length - 2
+    while y <= top
+      updateSquare(data, x, y)
+      return data[x][y] if data[x][y] > input
+      y+=1
+    end
+    y-=1
     
-    result =  dataValue(data, x-1, y+1) + dataValue(data, x, y+1) + dataValue(data, x+1, y+1) +
-              dataValue(data, x-1, y)   +                           dataValue(data, x+1, y)   +
-              dataValue(data, x-1, y-1) + dataValue(data, x, y-1) + dataValue(data, x+1, y-1)
+    # Calculte the top of the square
+    left = x - (length - 1)
+    x-=1
+    while x >= left
+      updateSquare(data, x, y)
+      return data[x][y] if data[x][y] > input
+      x-=1
+    end
+    x+=1
     
-    data[x][y] = result
+    # Calculte the left side of the square
+    bottom = y - (length - 1)
+    y-=1
+    while y >= bottom
+      updateSquare(data, x, y)
+      return data[x][y] if data[x][y] > input
+      y-=1
+    end
+    y+=1
+    
+    # Calculte the bottom of the square
+    right = x + (length - 1)
+    x+=1
+    while x <= right
+      updateSquare(data, x, y)
+      return data[x][y] if data[x][y] > input
+      x+=1
+    end
+    x-=1
+    #break if length == 5
   end
   
   return result
 end
 
-def dataValue(data, x, y)
+# Update the value of the square at position x,y
+def updateSquare(data, x, y)
+  data[x] = Hash.new if !data.has_key?(x)
+      
+  result =  fetchValue(data, x-1, y+1) + fetchValue(data, x, y+1) + fetchValue(data, x+1, y+1) +
+            fetchValue(data, x-1, y)   +                            fetchValue(data, x+1, y)   +
+            fetchValue(data, x-1, y-1) + fetchValue(data, x, y-1) + fetchValue(data, x+1, y-1)
+  
+  data[x][y] = result
+end
+
+# Return the value of the square at position x,y or return 0
+def fetchValue(data, x, y)
   if data.has_key?(x) and data[x].has_key?(y)
     return data[x][y]
   else
@@ -63,13 +109,8 @@ def part1(input)
   return side_length - distance
 end
 
-if ARGV[0] == "2"
-    puts "--- Part 2:"
-    result = part2(INPUT)
-else
-    puts "--- Part 1:"
-    result = part1(INPUT)
-end
+puts "--- Part 1:"
+puts "Result: #{part1(INPUT)}"
 
-
-puts "Result: #{result}"
+puts "--- Part 2:"
+puts "Result: #{part2(INPUT)}"
