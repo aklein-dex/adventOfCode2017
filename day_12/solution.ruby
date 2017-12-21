@@ -18,13 +18,11 @@ end
 # Could have create a function but wanted to extend Hash class for fun
 class Hash
   def add?(key)
-    if self.has_key?(key)
-      return self[key]
-    else
+    if !self.has_key?(key)
       prog = Program.new(key)
       self[key] = prog
-      return prog
     end
+    return self[key]
   end
 end
 
@@ -65,10 +63,12 @@ input.each_line do |line|
 end
 input.close
 
+# For part 1
 visited = Hash.new
 findConnections(visited, programs["0"])
 puts "Part 1: #{visited.size}"
 
+# For part 2
 visited = Hash.new
 # Count the number of groups
 count = 0
