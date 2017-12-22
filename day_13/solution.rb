@@ -19,17 +19,6 @@ def getScannerPosition(depth, pico)
   return position
 end
 
-# Firewall rules
-firewall = Array.new
-
-# Parse the file
-input = File.open('input.txt', 'r')
-input.each_line do |line|
-  layer = line.chomp.split(": ")
-  firewall[layer[0].to_i] = layer[1].to_i
-end
-input.close
-
 # Send the packet after a delay of "pico" picoseconds.
 # If strict is true then it will return -1 if get caught.
 # If strict is false, then it will continue to run and return the severity.
@@ -73,6 +62,17 @@ end
 def part1(firewall)
   return sendPacket(firewall, 0, false)
 end
+
+# Firewall rules
+firewall = Array.new
+
+# Parse the file
+input = File.open('input.txt', 'r')
+input.each_line do |line|
+  layer = line.chomp.split(": ")
+  firewall[layer[0].to_i] = layer[1].to_i
+end
+input.close
 
 puts "Part 1: #{part1(firewall)}"
 puts "Part 2: #{part2(firewall)}"
