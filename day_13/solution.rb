@@ -2,6 +2,8 @@
 
 puts "--- Day 13: Packet Scanners ---"
 
+# Note: I could have simplify this, because the only important thing is
+#       if the position is at 0 or not (it doesn't matter if the position is 3 or 4 or etc.).
 def getScannerPosition(depth, pico)
   # Length of a cycle before the scanner comes back to position 0
   cycle = (2*depth) - 2
